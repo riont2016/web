@@ -1,0 +1,29 @@
+{% load post_tags %}
+<article class="uk-comment uk-comment-primary uk-visible-toggle uk-padding-small">
+    <header class="uk-comment-header uk-position-relative">
+        <div class="uk-grid-medium uk-flex-middle" uk-grid>
+            <div class="uk-width-auto">
+                <img class="uk-comment-avatar" src="{% get_avatar_url comment.user %}" width="64" height="64"
+                     alt="">
+            </div>
+            <div class="uk-width-expand">
+                <h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" target="_blank"
+                                                                 href="{% get_profile_url comment.user %}">{{ comment.user.username }}</a></h4>
+                <p class="uk-comment-meta uk-margin-remove-top"></p>
+                <ul class="uk-comment-meta uk-subnav uk-margin-remove-top">
+                    <li><span class="uk-link-reset">{{ comment.created_time }}</span></li>
+                    {% if comment.level < 3 %}
+                    <li><a class="uk-link-muted uk-hidden-hover reply_button" href="#reply" data-id="{{ comment.id }}"
+                                  data-username="{{ comment.user }}">Reply</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% if comment.level == 0 %}
+            <div class="uk-position-bottom-right uk-position-small"><span class="uk-link-muted">#{{ counter }}</span></div>
+        {% endif %}
+    </header>
+    <div class="uk-comment-body">
+        <p>{{ comment.content }}</p>
+    </div>
+</article>

@@ -1,0 +1,92 @@
+{% extends 'blog/base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+{% load post_tags %}
+{% block beforehead %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/css/highlights/code.css' %}" />
+{% endblock %}
+{% block body %}
+    <div class="uk-grid uk-margin-top">
+        <div class="uk-width-3-4">
+            <div class="uk-container">
+
+                <article class="uk-article">
+                    <h1 class="uk-article-title">{{ post.title }}</h1>
+                    <p class="uk-article-meta">Written by {{ post.author.username }}
+                        on {{ post.created_time }}, {{ post.views }} views</p>
+                    {{ post.body|safe }}
+                </article>
+                <hr class="uk-divider-icon">
+                {% if user.is_authenticated %}
+                <article class="uk-comment uk-comment-primary" id="reply">
+                    <header class="uk-comment-header uk-position-relative">
+                        <div class="uk-grid-medium uk-flex-middle" uk-grid>
+                            <div class="uk-width-auto">
+                                <img class="uk-comment-avatar" src="{% get_avatar_url user %}" width="80" height="80" alt="">
+                            </div>
+                            <div class="uk-width-expand">
+                                <h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="{% get_profile_url user %}" target="_blank">{{ user.username }}</a></h4>
+                            </div>
+                        </div>
+
+                    </header>
+                    <div class="uk-comment-body">
+                        <form class="uk-form-controls" method="post" onsubmit="return onSubmitComment()">
+                            {% csrf_token %}
+                            <textarea name="{{ form.content.name }}" class="uk-textarea" rows="6" id="replay_comment_content" required></textarea>
+                            <input type="hidden" name="{{ form.parent.name }}" id="replay_comment_id">
+                            <input type="hidden" name="{{ form.user.name }}" value="{{ user.id }}">
+                            <input type="hidden" name="{{ form.post.name }}" value="{{ post.id }}">
+                            <button class="uk-button uk-button-default uk-margin-medium-top uk-align-right uk-margin-small-right">submit</button>
+                        </form>
+
+                    </div>
+                </article>
+                {% endif %}
+                <ul class="uk-comment-list">
+                    {% recursetree post.comments %}
+                        <li class="uk-margin-small-top">
+                            {% include 'blog/comment.html' with comment=node counter=revcounter %}
+                            {% if not node.is_leaf_node %}
+                                <ul class="uk-comment-list uk-margin-small-top" style="padding-left: 4%">
+                                    {{ children }}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endrecursetree %}
+                </ul>
+            </div>
+        </div>
+        <div class="uk-width-1-4">
+            <div uk-sticky="offset: 30">
+                {{ post.toc|safe }}
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+{% block afterbody %}
+    <script>
+        $('.reply_button').click(function () {
+            console.log("onclick!!");
+            $('#replay_comment_id').val($(this).data('id'));
+            $('#replay_comment_content').val('[reply]'+$(this).data('username')+'[/reply]\n');
+        });
+
+        function onSubmitComment() {
+
+            var content = $('#replay_comment_content').val();
+            var newstr = content.replace(/^\[reply\].*?\[\/reply\]\n/, '');
+            if (newstr) {
+                if (newstr === content) {
+                    $('#replay_comment_id').val('');
+                }
+                $('#replay_comment_content').val(newstr);
+                return true;
+            }
+            return false;
+        }
+    </script>
+{% endblock %}
