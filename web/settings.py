@@ -45,8 +45,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.gitlab',
     'mptt',
     'pagedown',
+    'ckeditor',
+    'ckeditor_uploader',
 
-    'rest_framework'
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -111,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'zh-Hans'
+LANGUAGE_CODE = 'zh-cn'
 
 TIME_ZONE = 'Asia/Shanghai'
 
@@ -164,3 +166,32 @@ elif django.VERSION >= (2,):
     from django.utils import deprecation
     # Anything to make mptt.templatetags.mptt_admin importable
     deprecation.RemovedInDjango20Warning = deprecation.RemovedInDjango30Warning
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = ROOT_URLCONF + 'media/'
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_CONFIGS = {
+    # 配置名是default时，django-ckeditor默认使用这个配置
+    'default': {
+        # 使用简体中文
+        'language':'zh-cn',
+        # 编辑器的宽高请根据你的页面自行设置
+        'width':'730px',
+        'height':'150px',
+        'image_previewText':' ',
+        'tabSpaces': 4,
+        'toolbar': 'Custom',
+        # 添加按钮在这里
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Format', 'RemoveFormat'],
+            ['NumberedList', 'BulletedList'],
+            ['Blockquote', 'CodeSnippet'],
+            ['Image', 'Link', 'Unlink'],
+            ['Maximize']
+        ],
+        # 插件
+        'extraPlugins': ','.join(['codesnippet','uploadimage','widget','lineutils',]),
+    }
+}

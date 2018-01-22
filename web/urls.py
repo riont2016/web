@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
+from django.conf.urls.static import static
+from django.conf import settings
 
 from blog.api_views import UserViewSet, PostViewSet, CommentViewSet, TagViewSet, CategoryViewSet
 from blog.views import IndexView
@@ -25,8 +27,9 @@ urlpatterns = [
    # url(r'^blog/', include('blog.urls', namespace='blog')),
     url(r'^blog/', include('blog.urls')),
     url(r'^accounts/', include('allauth.urls')),
-    url(r'^$', IndexView.as_view())
-]
+    url(r'^$', IndexView.as_view()),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)

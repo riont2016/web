@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Category(models.Model):
@@ -28,7 +29,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    body = models.TextField()
+    body = RichTextUploadingField()
     created_time = models.DateTimeField(default=timezone.now)
     modified_time = models.DateTimeField(auto_now=True)
     excerpt = models.CharField(max_length=200, blank=True)
