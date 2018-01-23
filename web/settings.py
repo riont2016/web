@@ -192,6 +192,6 @@ CKEDITOR_CONFIGS = {
             ['Maximize']
         ],
         # 插件
-        'extraPlugins': ','.join(['codesnippet','uploadimage','widget','lineutils',]),
+        'extraPlugins': ','.join(['codesnippet','uploadimage','widget','prism','lineutils',]),
     }
 }
