@@ -185,7 +185,7 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'Custom',
         # 添加按钮在这里
         'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline', 'Format', 'RemoveFormat'],
+            ['font_names','Bold', 'Italic', 'Underline', 'Format', 'RemoveFormat'],
             ['NumberedList', 'BulletedList'],
             ['Blockquote', 'CodeSnippet'],
             ['Image', 'Link', 'Unlink'],
