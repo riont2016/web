@@ -10,6 +10,11 @@
             <article class="uk-article">
                 <h1 class="uk-article-title">{{ post.title }}</h1>
                 <p class="uk-article-meta">Written by {{ post.author.username }} on {{ post.created_time }}, {{ post.views }} views</p>
+                <div class="uk-grid-small uk-child-width-auto" uk-grid>
+                    <div>
+                        <figure class="uk-thumbnail"><img src="media/{{ post.upload }}" alt=""></figure>
+                    </div>
+                </div>
                 {{ post.body|safe }}
             </article>
             <hr class="uk-divider-icon"> {% if user.is_authenticated %}
