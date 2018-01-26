@@ -30,7 +30,7 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     body = RichTextUploadingField()
-    upload = models.ImageField(upload_to='uploads/', verbose_name='文件缩略图')
+    upload = models.ImageField(upload_to='uploads/',blank=True,verbose_name='文件缩略图')
     created_time = models.DateTimeField(default=timezone.now)
     modified_time = models.DateTimeField(auto_now=True)
     excerpt = models.CharField(max_length=200, blank=True)
